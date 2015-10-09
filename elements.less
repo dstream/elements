@@ -50,7 +50,7 @@
   -moz-box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
   box-shadow: @x-axis @y-axis @blur rgba(0, 0, 0, @alpha);
 }
-.rounded(@radius: 2px) {
+.rounded(@radius: 2) {
   -webkit-border-radius: @radius;
   -moz-border-radius: @radius;
   border-radius: @radius;
@@ -98,12 +98,19 @@
 .scale(@ratio:1.5){
   .transform(scale(@ratio));
 }
-.transition(@duration:0.2s, @ease:ease-out) {
-  -webkit-transition: all @duration @ease;
-  -moz-transition: all @duration @ease;
-  -o-transition: all @duration @ease;
-  transition: all @duration @ease;
+.transition(@transition) {
+  -webkit-transition: @transition;  
+  -moz-transition:    @transition;
+  -ms-transition:     @transition; 
+  -o-transition:      @transition;  
 }
+.transition-all(@duration:0.2s, @ease:ease-out) {
+  .transition(all @duration @ease);  
+}
+.transition-single(@propety: all, @duration:0.2s, @ease:ease-out) {
+  .transition(@propety @duration @ease);  
+}
+
 .inner-shadow(@horizontal:0, @vertical:1px, @blur:2px, @alpha: 0.4) {
   -webkit-box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
   -moz-box-shadow: inset @horizontal @vertical @blur rgba(0, 0, 0, @alpha);
@@ -153,4 +160,42 @@
   -moz-background-clip: @argument;
   -webkit-background-clip: @argument;
   background-clip: @argument;
+}
+
+.breakpoint(@maxWidth; @rules) {
+    @media only screen and (max-width: @maxWidth) {
+        @rules();
+    }
+}
+.min-breakpoint(@minWidth; @rules) {
+    @media only screen and (min-width: @minWidth) {
+        @rules();
+    }
+}
+
+.font-size(@sizeValue) {
+  @remValue: (@sizeValue / 16);
+  @pxValue: @sizeValue;
+  font-size: ~"@{pxValue}px"; 
+  font-size: ~"@{remValue}rem";
+}
+.line-height(@sizeValue) {
+  @remValue: (@sizeValue / 16);
+  @pxValue: @sizeValue;
+  line-height: ~"@{pxValue}px"; 
+  line-height: ~"@{remValue}rem";
+}
+
+// example: .rotate(90); 
+.rotate(@degrees) {  
+  -sand-transform: rotate(@degrees + deg);
+  -webkit-transform: rotate(@degrees + deg);
+      -ms-transform: rotate(@degrees + deg);
+          transform: rotate(@degrees + deg);
+}
+
+// example: .background-opacity(#333, 0.5);
+.background-opacity(@color, @opacity: 0.3) {
+    background: @color; /* The Fallback */
+    background: rgba(@color, @opacity);
 }
